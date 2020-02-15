@@ -1,14 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import HomeLayout from './components/HomeLayout/HomeLayout';
+import Mercadolibre from './containers/Mercadolibre/Mercadolibre';
 
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <HomeLayout />
-      </div>
+        <Mercadolibre />
     </BrowserRouter>
   );
 }
