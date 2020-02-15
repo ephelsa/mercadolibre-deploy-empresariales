@@ -1,0 +1,30 @@
+.Paging {
+ display: inline;
+ align-items: center;
+ text-align: center;
+}
+
+.Paging ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Paging li {
+  display: inline-block;
+  margin: 5px
+}
+
+.Paging a {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.Active,
+.Active a {
+  color: #0a62c7;
+  font-size: 18px;
+  font-weight: bold;
+}

@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 import classes from './SearchBar.css';
 import search from '../../assets/resources/search.svg';
 
-import CountryContext from '../../context/country-context';
-
+import SearchContext from '../../context/search-context';
 import Tooltip from '../../components/UI/Tooltip/Tooltip';
-import Alert from '../UI/Alert/Alert';
+
 
 class SearchBar extends Component {
-  static contextType = CountryContext;
+  static contextType = SearchContext;
   
   state = {
     searchValue: '',
-    searching: false,
     validQuery: false,
-    error: {
-      hasError: false,
-      errorMessage: ''
-    }
   };
 
   constructor(props) {
@@ -29,7 +22,7 @@ class SearchBar extends Component {
 
   componentDidMount() {
     if (this.searchInputRef.current) {
-      const contextSearchValue = this.context.queryValue;
+      const contextSearchValue = this.state.searchValue;
       const isQueryValid = contextSearchValue !== '' && contextSearchValue !== undefined;
 
       this.searchInputRef.current.focus();
@@ -41,25 +34,7 @@ class SearchBar extends Component {
   }
 
   searchQueryRequest() {   
-    this.setState({searching: true});
-    this.context.queryValue = this.state.searchValue;
-    
-    axios.get(`/sites/${this.context.countryCode}/search?q=${this.state.searchValue}`)
-      .then(res => {
-        console.log('[SearchBar] response -> Continue', res); 
-      })
-      .catch(error => {
-        this.setState({ 
-          error: { 
-            hasError: true,
-            errorMessage: error
-          }
-        });
-      })
-      .finally(() => {
-        this.setState({searching: false});
-        console.log('[SearchBar] finally', this.context.queryValue); 
-      });
+    this.props.history.push({ pathname: '/results/' + this.state.searchValue + '/1' })
   }
 
   searchHandler(event) { 
@@ -79,14 +54,6 @@ class SearchBar extends Component {
     }); 
   }
 
-  errorClickHandler() {
-    this.setState({
-      error: {
-        hasError: false
-      }
-    });
-  }
-
   render() {
     const height = this.props.height === undefined ? '30px' : this.props.height;
     const width = this.props.width === undefined ? '350px' : this.props.width;
@@ -97,15 +64,7 @@ class SearchBar extends Component {
       width: width
     };
 
-    const errorElement = (
-      <Alert 
-        alertType="error"
-        onClick={ this.errorClickHandler }>
-        ¡Upss, un error inesperado! Intenta verificar tu conexión a internet.
-        { this.state.error.errorMessage }
-      </Alert>
-    );
-    const loadingElement = (<p>Cargando cosas maravillosas... ¡Danos un tantito!</p>);
+    //const loadingElement = (<p>Cargando cosas maravillosas... ¡Danos un tantito!</p>);
     const searchBarElement = (
       <div 
         className={classes.SearchBar} 
@@ -121,7 +80,6 @@ class SearchBar extends Component {
             style={{ fontSize: fontSize }}
             ref={this.searchInputRef}
             value={this.state.searchValue}
-            disabled={ this.state.searching }
             onChange={(e) => this.inputChangeHandler(e) }
             onKeyPress={(e) => this.searchHandler(e.key) } />
         </Tooltip>
@@ -134,7 +92,7 @@ class SearchBar extends Component {
             type="image"
             src={search} 
             alt="Buscar"
-            disabled={!this.state.validQuery || this.state.searching }
+            disabled={!this.state.validQuery }
             onClick={(e) => this.searchHandler(e.type) } />
         </Tooltip>
       </div>
@@ -142,9 +100,7 @@ class SearchBar extends Component {
 
     return (
       <div>
-        { this.state.error.hasError ? errorElement : null }
         { searchBarElement }
-        { this.state.searching ? loadingElement : null }
       </div>
     );
   }
