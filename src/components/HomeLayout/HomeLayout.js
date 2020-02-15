@@ -4,10 +4,11 @@ import classes from './HomeLayout.css';
 
 import Aux from '../../hoc/Aux';
 import Logo from '../Logo/Logo';
-import SearchBar from '../SearchBar/SearchBar';
+import SearchBar from '../../containers/SearchBar/SearchBar';
 
 const homeLayout = (props) => (
   <Aux>
+    {console.log(props)}
     <header>
       <Logo />
     </header>

@@ -1,12 +1,15 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 import HomeLayout from './components/HomeLayout/HomeLayout';
 
 function App() {
   return (
-    <div>
-      <HomeLayout />
-    </div>
+    <BrowserRouter>
+      <div>
+        <HomeLayout />
+      </div>
+    </BrowserRouter>
   );
 }
 
