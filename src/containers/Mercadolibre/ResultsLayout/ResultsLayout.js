@@ -25,7 +25,7 @@ class ResultsLayout extends Component {
   }
 
   componentDidUpdate(prevProv, prevState) {
-    if (this.props.match.params.page !== prevProv.match.params.page) {
+    if (this.props.match.params !== prevProv.match.params) {
       this.changePage();
     }
   }
